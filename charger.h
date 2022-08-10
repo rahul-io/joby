@@ -1,17 +1,15 @@
 #pragma once
 
 #include "vehicle.h"
-#include <vector>
 #include <queue>
 
-#define charger std::queue<vehicle*>
-
+// needs a semaphore
 class chargingStation {
     public:
         chargingStation(int numChargers);
-        void allocate(vehicle);
+        void allocate();
 
     private:
-        // maybe make this a priority queue based on queue size
-        std::vector<charger> chargerList;
+        int chargerCounter = 3;
+        std::queue<vehicle*> vehicleQueue;
 };

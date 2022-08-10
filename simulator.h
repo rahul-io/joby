@@ -1,12 +1,18 @@
 #include "charger.h"
 #include "vehicle.h"
+#include <vector>
+#include <queue>
 
 class Simulator {
 public:
-    void Simulate();
-    std::vector<vehicle> testVehicles;
+    Simulator(int elapsedTimeInMinutes, std::vector<Vehicle> vehicles);
+    void simulate();
 
 private:
-    chargingStation simCharger;
+    std::vector<Vehicle> vehicles;
+    int elapsedTimeInMintues;
+    int chargeSlot=3;
+    std::queue<Vehicle*> chargingQueue;
 
+    void pickCharges();
 };
