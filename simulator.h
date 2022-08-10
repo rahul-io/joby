@@ -2,16 +2,17 @@
 #include "vehicle.h"
 #include <vector>
 #include <queue>
+#include <chrono>
 
 class Simulator {
 public:
-    Simulator(int elapsedTimeInMinutes, std::vector<Vehicle> vehicles);
+    Simulator(int simDuration) : {};
     void simulate();
 
 private:
-    std::vector<Vehicle> vehicles;
-    int elapsedTimeInMintues;
-    int chargeSlot=3;
+    static const int NUMBER_OF_VEHICLES = 20;
+    int simDuration; // in minutes;
+    std::vector<Vehicle> vehicles[20];
     std::queue<Vehicle*> chargingQueue;
 
     void pickCharges();

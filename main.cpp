@@ -2,9 +2,12 @@
 #include "simulator.h"
 
 int main() {
-  std::cout << "Hello, World" << std::endl;
+  std::cout << "Please enter simulation time in minutes:";
+  int simTime;
 
-  Simulator mySim();
+  std::cin >> simTime;
+
+  Simulator mySim(simTime);
 
   mySim.simulate();
 }

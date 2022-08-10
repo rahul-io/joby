@@ -4,7 +4,7 @@
 
 class Vehicle {
  public:
-  Vehicle(){}
+  Vehicle() {}
   Vehicle(
     CompanyType companyType,
     int cruiseSpeed, 
@@ -18,15 +18,15 @@ class Vehicle {
   void charge(int);
   void chargeWait(int);
   
-
   // In-between actions
   void chargeReady(int);
 
   VehicleState getVehicleState() { return this->state;}
+  void simulationStateMachine();
   float getCurrentChargeWaitTime() { return this->currentChargeWaitTime;}
 
  private:
-  VehicleState state = VehicleState::NOT_WORKING;
+  VehicleState state = VehicleState::START;
   CompanyType company;
   int cruiseSpeed; // miles per minute
   int batteryCapacity; // kWh

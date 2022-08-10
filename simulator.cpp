@@ -1,7 +1,7 @@
 #include "enums.h"
 #include "simulator.h"
 #include "vehicle.h"
-
+#include <thread>
 
 /**
 Orchestrator | Start your job, 1 charging slot| figure out the simulator|
@@ -13,43 +13,32 @@ B            |          -Waiting              | Everybody who's waiting |
 C            |          -Charging->FLying     |                         |
 */
 
-Simulator::Simulator(int elapseTimeInMinutes, std::vector<Vehicle> vehicles) {
+Simulator::Simulator(int simDuration) : simDuration(simDuration) {
     // create vector of vehicles
     
-    this->elapseTimeInMinutes = elapseTimeInMinutes;
-    this->vehicles = vehicles;
 }
 
 void Simulator::simulate() {
     // create a thread for each vehicle
+    std::thread vehicleThreads[20];
 
-    // start execution thread for vehicle
+    std::time_t startTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
     // call fly on flying boys
-    for (auto vehicle : vehicles) {
-        vehicle.fly(); // asynchronously
+    for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
+        vehicleThreads[i] = std::thread(&Vehicle::simulationStateMachine, vehicles[i], startTime, simDuration);// asynchronously
     }
-    // call charge on charging boys
+
+    for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
+        vehicleThreads[i].join();
+    }
+
     // call chargewait on charging wait boys
 
     // after 3 calls are OVER then call Pick charge
 
     // sleep depends on the time left
-    sleep(1000);
-}
-
-void Charger::tryToCharge(Vehicle* chargingVehicle) {
-    if (chargeSlot > 0) {
-        chargeSlot--;
-        Vehicle->charge();
-    }
-    else {
-        chargingQueue.push(chargingVehicle);
-    }
-}
-
-void Charger::free() {
-    chargeSlot++;
+    
 }
 
 void Simulator::pickCharges() {

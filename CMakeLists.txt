@@ -1,12 +1,8 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16.3)
 
-project(my_project)
+project(joby_evtol_sim)
 
-# Abseil requires C++11
 set(CMAKE_CXX_STANDARD 11)
-
-# Process Abseil's CMake build system
-add_subdirectory(abseil-cpp)
 
 add_executable(hello_world hello_world.cc)
 

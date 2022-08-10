@@ -8,8 +8,9 @@ class chargingStation {
     public:
         chargingStation(int numChargers);
         void allocate();
+        void enterCharger(Vehicle* chargingVehicle);
 
     private:
         int chargerCounter = 3;
-        std::queue<vehicle*> vehicleQueue;
+        std::queue<Vehicle*> chargingQueue;
 };

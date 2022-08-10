@@ -23,32 +23,24 @@ Vehicle::Vehicle(
           this->faultProbability /= MINUTES_PER_HOUR;
         }
 
-void Vehicle::simulationStateMachine() {
-  switch (this->vehicleState):
-  
-}
-
-void Vehicle::charge(int elapsedTimeInMinutes) {
-  // Each slice of simulation is a minute.
-  this->state = VehicleState::CHARGING;
-  this->currentChargeTime += elapsedTimeInMinutes;
- 
-  if (this->currentChargeTime >= this->chargeTime) {
-    this->batteryLevel = this->batteryCapacity;
-    this-> state = VehicleState::IN_FLIGHT;
-    Charger.free();
-    // let go of the charge mutex; increment the mutex.
+void Vehicle::simulationStateMachine(time_t startTime, int simDuration) {
+  while (/*current time is less than end time*/) {
+    switch (this->state) {
+      case START:
+        this->state = VehicleState::FLYING;
+      case FLYING:
+        fly();
+    }
   }
 }
 
-// Fault means it can fly for the sake of brevity. 
-// Things to keep track of while flying
-// * Distance: odometer
-// * flight time: flightTime
-// * Battery level: batteryLevel
-void Vehicle::fly(int elapsedTimeInMinutes) {
-  state = VehicleState::IN_FLIGHT;
-  flightTime += elapsedTimeInMinutes;
+void Vehicle::fly(/*simulation end time*/) {
+
+  //state = VehicleState::FLYING;
+  //flightTime += elapsedTimeInMinutes;
+
+  
+
   int elapsedDistance = elapsedTimeInMinutes * cruiseSpeed;
   odometer += elapsedDistance;
   batteryLevel -= elapsedDistance * energyUse;
@@ -79,3 +71,22 @@ void Vehicle::chargeReady(int elapsedTimeInMintues) {
 
   this->currentChargeWaitTime = 0;
 }
+
+void Vehicle::charge(int elapsedTimeInMinutes) {
+  // Each slice of simulation is a minute.
+  this->state = VehicleState::CHARGING;
+  this->currentChargeTime += elapsedTimeInMinutes;
+ 
+  if (this->currentChargeTime >= this->chargeTime) {
+    this->batteryLevel = this->batteryCapacity;
+    this-> state = VehicleState::FLYING;
+    Charger.free();
+    // let go of the charge mutex; increment the mutex.
+  }
+}
+
+// Fault means it can fly for the sake of brevity. 
+// Things to keep track of while flying
+// * Distance: odometer
+// * flight time: flightTime
+// * Battery level: batteryLevel
