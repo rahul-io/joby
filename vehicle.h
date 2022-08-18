@@ -1,6 +1,7 @@
 #pragma once
 
 #include "enums.h"
+#include <chrono>
 
 class Vehicle {
  public:
@@ -9,43 +10,37 @@ class Vehicle {
     CompanyType companyType,
     int cruiseSpeed, 
     int batteryCapacity, 
-    float chargeTime, 
-    float energyUse, 
+    double chargeTime, 
+    double energyUse, 
     int passengerCount, 
-    float faultProbability);
+    double faultProbability);
 
-  void fly(int);
-  void charge(int);
-  void chargeWait(int);
-  
-  // In-between actions
-  void chargeReady(int);
+  void fly(std::chrono::steady_clock::time_point simEndTime);
+  void charge();
 
   VehicleState getVehicleState() { return this->state;}
-  void simulationStateMachine();
-  float getCurrentChargeWaitTime() { return this->currentChargeWaitTime;}
+  void simulationStateMachine(std::chrono::steady_clock::time_point simEndTime);
 
  private:
   VehicleState state = VehicleState::START;
   CompanyType company;
-  int cruiseSpeed; // miles per minute
   int batteryCapacity; // kWh
-  float chargeTime; // minutes
-  float energyUse; // kWh per mile
   int passengerCount; // human bodies
-  float faultProbability; // faults per minute
-
+  double energyUse; // kWh per mile
+  
+  double cruiseSpeed; // miles per (simulated) minute (realworld second)
+  double chargeTime; // (simulated) minutes (realworld seconds)
+  double faultProbability; // faults per (simulated) minute (realworld second)
+  
   // vehicle stats
-  float flightTime = 0;
-  float totalChargeTime = 0;
-  float currentChargeTime = 0;
-  float totalChargerWaitTime = 0;
+  std::chrono::duration<double> totalFlightTime = std::chrono::seconds{0};
+  std::chrono::duration<double> totalChargingTime = std::chrono::seconds{0};
+  std::chrono::duration<double> totalChargerWaitTime = std::chrono::seconds{0};
   int faultCounter = 0;
-  float odometer = 0;
+  double odometer = 0;
 
   // battery charging info
-  // battery state.
   float batteryLevel;
 
-  void fault(int elapsedFaultProbability);
+  void fault();
 };
