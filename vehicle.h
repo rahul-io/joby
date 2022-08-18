@@ -16,8 +16,8 @@ class Vehicle {
     int passengerCount, 
     double faultProbability);
 
-  void simulate(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng, int index);
-  void fly(std::chrono::steady_clock::time_point simEndTime, int index);
+  void simulate(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
+  void fly(std::chrono::steady_clock::time_point simEndTime);
   void charge();
   CompanyName getCompanyName() { return companyName; }
 

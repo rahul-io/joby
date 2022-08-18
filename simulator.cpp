@@ -41,8 +41,7 @@ void Simulator::simulate() {
         vehicleThreads[i] = std::thread(&Vehicle::simulate,
                                         std::ref(vehicles[i]),
                                         simEndTime,
-                                        std::ref(rng[i]),
-                                        i);
+                                        std::ref(rng[i]));
     }
 
     for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {

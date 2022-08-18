@@ -33,7 +33,7 @@ Vehicle::Vehicle(
                                           (double)1/MINUTES_PER_HOUR);
         }
 
-void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng, int index) {
+void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng) {
   rng.seed(std::hash<std::thread::id>()(std::this_thread::get_id()));
   std::thread faultCounterThread(&Vehicle::trackFaults,
                                   this,
@@ -45,7 +45,7 @@ void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng, i
       case START:
         this->state = VehicleState::FLYING;
       case FLYING:
-        fly(simEndTime, index);
+        fly(simEndTime);
         break;
       case CHARGING:
         charge();
@@ -61,7 +61,7 @@ void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng, i
   std::printf("batteryLevel: %f\ttotalFlightTime: %f\todometer: %f\tfaultCounter: %i\n", batteryLevel, totalFlightTime.count(), odometer, faultCounter);
 }
 
-void Vehicle::fly(steady_clock::time_point simEndTime, int index) {
+void Vehicle::fly(steady_clock::time_point simEndTime) {
   auto flightStartTime = steady_clock::now();
   duration<double> currentFlightDuration;
   double currentFlightDistance;
@@ -73,7 +73,7 @@ void Vehicle::fly(steady_clock::time_point simEndTime, int index) {
     currentFlightDistance = currentFlightDuration.count() * cruiseSpeed;
     batteryLevel = batteryCapacity - (currentFlightDistance * energyUse);
 
-    std::printf("Vehicle index: %i\tCompany Name: %i\tcurrentFlightDuration: %f\tcurrentFlightDistance: %f\tbatteryLevel: %f\n", index, companyName, currentFlightDuration.count(), currentFlightDistance, batteryLevel);
+    std::printf("Company Name: %i\tcurrentFlightDuration: %f\tcurrentFlightDistance: %f\tbatteryLevel: %f\n", companyName, currentFlightDuration.count(), currentFlightDistance, batteryLevel);
   }
 
   // handle battery drain overflows
@@ -112,7 +112,6 @@ void Vehicle::trackFaults(steady_clock::time_point simEndTime, std::mt19937& rng
 
  /*
   TODO LIST
-  instantiate all vehicles
   charger
   calc
   tests
