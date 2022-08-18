@@ -16,9 +16,10 @@ class Vehicle {
     int passengerCount, 
     double faultProbability);
 
-  void simulationStateMachine(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
-  void fly(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
+  void simulate(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng, int index);
+  void fly(std::chrono::steady_clock::time_point simEndTime, int index);
   void charge();
+  CompanyName getCompanyName() { return companyName; }
 
  private:
   VehicleState state = VehicleState::START;
@@ -40,6 +41,5 @@ class Vehicle {
 
   // battery charging info
   float batteryLevel;
-
-  double fault(std::mt19937& rng);
+  void trackFaults(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
 };
