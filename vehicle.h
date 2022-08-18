@@ -2,6 +2,7 @@
 
 #include "enums.h"
 #include <chrono>
+#include <random>
 
 class Vehicle {
  public:
@@ -15,11 +16,9 @@ class Vehicle {
     int passengerCount, 
     double faultProbability);
 
-  void fly(std::chrono::steady_clock::time_point simEndTime);
+  void simulationStateMachine(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
+  void fly(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
   void charge();
-
-  VehicleState getVehicleState() { return this->state;}
-  void simulationStateMachine(std::chrono::steady_clock::time_point simEndTime);
 
  private:
   VehicleState state = VehicleState::START;
@@ -42,5 +41,5 @@ class Vehicle {
   // battery charging info
   float batteryLevel;
 
-  void fault();
+  double fault(std::mt19937& rng);
 };

@@ -5,7 +5,6 @@
 #include <thread>
 #include <iostream>
 #include <math.h>
-#include <random>
 
 using namespace std::chrono;
 
@@ -30,16 +29,16 @@ Vehicle::Vehicle(
           this->chargeTime /= MINUTES_PER_HOUR;
           
           // converting probability of failure per hour to probability of failure per minute
-          this->faultProbability = 1 - pow(1-this->faultProbability, (double)1/MINUTES_PER_HOUR);;
+          this->faultProbability = 1 - pow(1-this->faultProbability, (double)1/MINUTES_PER_HOUR);
         }
 
-void Vehicle::simulationStateMachine(steady_clock::time_point simEndTime) {
+void Vehicle::simulationStateMachine(steady_clock::time_point simEndTime, std::mt19937& rng) {
   while (std::chrono::steady_clock::now() < simEndTime) {
     switch (this->state) {
       case START:
         this->state = VehicleState::FLYING;
       case FLYING:
-        fly(simEndTime);
+        fly(simEndTime, rng);
         break;
       case CHARGING:
         charge();
@@ -52,7 +51,7 @@ void Vehicle::simulationStateMachine(steady_clock::time_point simEndTime) {
   }
 }
 
-void Vehicle::fly(steady_clock::time_point simEndTime) {
+void Vehicle::fly(steady_clock::time_point simEndTime, std::mt19937& rng) {
   auto flightStartTime = steady_clock::now();
   duration<double> currentFlightDuration;
   double currentFlightDistance;
@@ -63,9 +62,9 @@ void Vehicle::fly(steady_clock::time_point simEndTime) {
     currentFlightDuration = now - flightStartTime;
     currentFlightDistance = currentFlightDuration.count() * cruiseSpeed;
     batteryLevel = batteryCapacity - (currentFlightDistance * energyUse);
-    fault();
+    double faultRand = this->fault(rng);
 
-    std::printf("Current time: %li Sim End Time: %li  currentFlightDuration: %f currentFlightDistance: %f batteryLevel: %f  number of faults: %i\n", now.time_since_epoch().count(), simEndTime.time_since_epoch().count(), currentFlightDuration.count(), currentFlightDistance, batteryLevel, faultCounter);
+    std::printf("Current time: %li Sim End Time: %li  currentFlightDuration: %f currentFlightDistance: %f batteryLevel: %f  faultRand: %f number of faults: %i\n", now.time_since_epoch().count(), simEndTime.time_since_epoch().count(), currentFlightDuration.count(), currentFlightDistance, batteryLevel, faultRand, faultCounter);
   }
 
   // handle battery drain overflows
@@ -94,12 +93,22 @@ void Vehicle::fly(steady_clock::time_point simEndTime) {
 
 }
 
-void Vehicle::fault() {
-  double randDouble =  (double) rand() / (RAND_MAX);
+double Vehicle::fault(std::mt19937& rng) {
+  unsigned int randmin = rng.min();
+  unsigned int randmax = rng.max();
+
+  double randDouble =  (double) rng() / UINT32_MAX;
   this->faultCounter += (randDouble < this->faultProbability) ? 1 : 0;
+  return randDouble;
 }
 
-void Vehicle::charge(int elapsedTimeInMinutes) {
+ /*
+  TODO LIST
+  instantiate all vehicles
+  charger
+  calc
+  tests
+ */
 
 void Vehicle::charge() {
   // Each slice of simulation is a minute.
