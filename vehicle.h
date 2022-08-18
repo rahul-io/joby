@@ -8,7 +8,7 @@ class Vehicle {
  public:
   Vehicle() {}
   Vehicle(
-    CompanyType companyType,
+    CompanyName companyName,
     int cruiseSpeed, 
     int batteryCapacity, 
     double chargeTime, 
@@ -22,7 +22,7 @@ class Vehicle {
 
  private:
   VehicleState state = VehicleState::START;
-  CompanyType company;
+  CompanyName companyName;
   int batteryCapacity; // kWh
   int passengerCount; // human bodies
   double energyUse; // kWh per mile

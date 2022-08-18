@@ -1,6 +1,6 @@
 #pragma once
 
-enum CompanyType {
+enum CompanyName {
     alpha = 0, beta, charlie, delta, echo
 };
 

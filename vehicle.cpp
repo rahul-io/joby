@@ -9,14 +9,14 @@
 using namespace std::chrono;
 
 Vehicle::Vehicle(
-    CompanyType companyType,
+    CompanyName companyName,
     int cruiseSpeed, 
     int batteryCapacity, 
     double chargeTime, 
     double energyUse, 
     int passengerCount, 
     double faultProbability) :
-        company(company),
+        companyName(companyName),
         cruiseSpeed(cruiseSpeed),
         batteryCapacity(batteryCapacity),
         chargeTime(chargeTime),
@@ -29,7 +29,8 @@ Vehicle::Vehicle(
           this->chargeTime /= MINUTES_PER_HOUR;
           
           // converting probability of failure per hour to probability of failure per minute
-          this->faultProbability = 1 - pow(1-this->faultProbability, (double)1/MINUTES_PER_HOUR);
+          this->faultProbability = 1 - pow(1-this->faultProbability,
+                                          (double)1/MINUTES_PER_HOUR);
         }
 
 void Vehicle::simulationStateMachine(steady_clock::time_point simEndTime, std::mt19937& rng) {
