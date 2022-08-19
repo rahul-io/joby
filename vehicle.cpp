@@ -140,7 +140,6 @@ void Vehicle::trackFaults(steady_clock::time_point simEndTime,
 
 /*
  TODO LIST
- calc
  tests
  documentation
 */

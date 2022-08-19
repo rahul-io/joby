@@ -10,6 +10,7 @@ class processor {
  public:
   processor();
   void processVehicle(const Vehicle& vehicle);
+  void prettyPrint();
 
  private:
   struct typeInfo {
@@ -17,6 +18,7 @@ class processor {
     int numVehicles = 0;
     std::chrono::duration<double> avgFlightTime = std::chrono::seconds{0};
     std::chrono::duration<double> avgChargeTime = std::chrono::seconds{0};
+    std::chrono::duration<double> avgChargerWaitTime = std::chrono::seconds{0};
     int maxFaults = 0;
     double totalPassengerDistance = 0;
   };

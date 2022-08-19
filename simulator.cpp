@@ -26,8 +26,6 @@ Simulator::Simulator() {
         simParams[randIndex].batteryCapacity, simParams[randIndex].chargeTime,
         simParams[randIndex].energyUse, simParams[randIndex].passengerCount,
         simParams[randIndex].faultProbability, i);
-    std::cout << "vehicle " << i << " company: " << vehicles[i].getCompanyName()
-              << '\n';
   }
 
   auto end = steady_clock::now();
@@ -55,8 +53,11 @@ void Simulator::simulate() {
     vehicleThreads[i].join();
   }
 
+  std::cout << "Simulation complete!\n";
+
   for (auto vehicle : this->vehicles) {
     simProcessor.processVehicle(vehicle);
-    vehicle.printInfo();
   }
+
+  simProcessor.prettyPrint();
 }
