@@ -63,7 +63,7 @@ void Vehicle::printInfo() {
       "%f\ttotalChargeTime: %f\ttotalChargingWaitTime: %f\todometer: "
       "%f\tfaultCounter: %i\n",
       index, companyName, batteryLevel, totalFlightTime.count(),
-      totalChargingTime.count(), totalChargerWaitTime.count(), odometer,
+      totalChargeTime.count(), totalChargerWaitTime.count(), odometer,
       faultCounter);
 }
 
@@ -116,7 +116,7 @@ void Vehicle::charge(std::chrono::steady_clock::time_point simEndTime,
         this->chargeTime.count(),
         double(duration<double>(simEndTime - steady_clock::now()).count())));
     std::this_thread::sleep_for(currentChargeTime);
-    this->totalChargingTime += currentChargeTime;
+    this->totalChargeTime += currentChargeTime;
     this->batteryLevel = batteryCapacity;
     // std::printf("Vehicle %i finished charging\n", this->index);
     simChargingStation.charger.release();
@@ -142,11 +142,5 @@ void Vehicle::trackFaults(steady_clock::time_point simEndTime,
  TODO LIST
  calc
  tests
- mutex on fault counter
+ documentation
 */
-
-// Fault means it can fly for the sake of brevity.
-// Things to keep track of while flying
-// * Distance: odometer
-// * flight time: flightTime
-// * Battery level: batteryLevel

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <queue>
 #include <random>
 #include <thread>
 #include <vector>
 
 #include "chargingStation.h"
+#include "processor.h"
 #include "vehicle.h"
 
 class Simulator {
@@ -21,4 +21,5 @@ class Simulator {
   inline static std::thread vehicleThreads[NUMBER_OF_VEHICLES];
   inline static std::mt19937 rng[NUMBER_OF_VEHICLES];
   inline static Vehicle vehicles[NUMBER_OF_VEHICLES];
+  static processor simProcessor;
 };

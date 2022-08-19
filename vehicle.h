@@ -36,7 +36,7 @@ class Vehicle {
 
   // vehicle stats
   std::chrono::duration<double> totalFlightTime = std::chrono::seconds{0};
-  std::chrono::duration<double> totalChargingTime = std::chrono::seconds{0};
+  std::chrono::duration<double> totalChargeTime = std::chrono::seconds{0};
   std::chrono::duration<double> totalChargerWaitTime = std::chrono::seconds{0};
   int faultCounter = 0;
   double odometer = 0;
@@ -45,4 +45,5 @@ class Vehicle {
   float batteryLevel;
   void trackFaults(std::chrono::steady_clock::time_point simEndTime,
                    std::mt19937& rng);
+  friend class processor;
 };

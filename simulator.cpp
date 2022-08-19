@@ -11,6 +11,7 @@
 using namespace std::chrono;
 
 chargingStation Simulator::simChargingStation;
+processor Simulator::simProcessor;
 
 Simulator::Simulator() {
   auto start = steady_clock::now();
@@ -55,6 +56,7 @@ void Simulator::simulate() {
   }
 
   for (auto vehicle : this->vehicles) {
+    simProcessor.processVehicle(vehicle);
     vehicle.printInfo();
   }
 }

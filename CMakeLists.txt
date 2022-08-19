@@ -15,10 +15,16 @@ add_library(
   simulator.cpp
 )
 
+add_library(
+  processor
+  processor.h
+  processor.cpp
+)
+
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)                                                                                                                                                                                                           
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)                                                                                                                                                                                                           
 find_package(Threads REQUIRED)   
 
 add_executable(joby_evtol_sim main.cpp)
 
-target_link_libraries(joby_evtol_sim PRIVATE simulator vehicle Threads::Threads)
+target_link_libraries(joby_evtol_sim PRIVATE simulator vehicle processor Threads::Threads)
