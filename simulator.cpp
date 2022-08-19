@@ -1,51 +1,60 @@
-#include "enums.h"
 #include "simulator.h"
-#include "vehicle.h"
-#include "vehicleParams.h"
+
+#include <chrono>
 #include <iostream>
 #include <random>
-#include <chrono>
+
+#include "enums.h"
+#include "vehicle.h"
+#include "vehicleParams.h"
 
 using namespace std::chrono;
 
+chargingStation Simulator::simChargingStation;
+
 Simulator::Simulator() {
-    auto start = steady_clock::now();
-    std::mt19937 gen(system_clock::now().time_since_epoch().count());
-    
-    for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
-        std::uniform_int_distribution<int> dist(0, 4);
-        int randIndex = dist(gen);
-        
-        this->vehicles[i] = Vehicle(simParams[randIndex].companyName, 
-                                    simParams[randIndex].cruiseSpeed, 
-                                    simParams[randIndex].batteryCapacity,
-                                    simParams[randIndex].chargeTime,
-                                    simParams[randIndex].energyUse,
-                                    simParams[randIndex].passengerCount,
-                                    simParams[randIndex].faultProbability);
-        std::cout << "vehicle " << i << " company: " << vehicles[i].getCompanyName() << std::endl;
-    }
+  auto start = steady_clock::now();
+  std::mt19937 gen(system_clock::now().time_since_epoch().count());
 
-    auto end = steady_clock::now();
-    auto duration = end - start;
+  for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
+    std::uniform_int_distribution<int> dist(0, 4);
+    int randIndex = dist(gen);
 
-    std::cout << "generation time: " << duration.count() << std::endl;
+    vehicles[i] = Vehicle(
+        simParams[randIndex].companyName, simParams[randIndex].cruiseSpeed,
+        simParams[randIndex].batteryCapacity, simParams[randIndex].chargeTime,
+        simParams[randIndex].energyUse, simParams[randIndex].passengerCount,
+        simParams[randIndex].faultProbability, i);
+    std::cout << "vehicle " << i << " company: " << vehicles[i].getCompanyName()
+              << '\n';
+  }
+
+  auto end = steady_clock::now();
+  auto duration = end - start;
 }
 
 void Simulator::simulate() {
+  auto simStartTime = steady_clock::now();
+  auto simEndTime = simStartTime + duration<int>(simDuration);
 
-    auto simStartTime = steady_clock::now();
-    auto simEndTime = simStartTime + duration<int>(simDuration);
+  for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
+    vehicleThreads[i] =
+        std::thread(&Vehicle::simulate, std::ref(vehicles[i]), simEndTime,
+                    std::ref(rng[i]), std::ref(simChargingStation));
+  }
 
-    for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
-        vehicleThreads[i] = std::thread(&Vehicle::simulate,
-                                        std::ref(vehicles[i]),
-                                        simEndTime,
-                                        std::ref(rng[i]));
-    }
+  int timeCounter = 0;
+  while (steady_clock::now() < simEndTime) {
+    std::cout << timeCounter << " seconds\n";
+    std::this_thread::sleep_for(1s);
+    timeCounter++;
+  }
 
-    for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
-        vehicleThreads[i].join();
-    }
-    
+  for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
+    vehicleThreads[i].join();
+  }
+
+  for (auto vehicle : this->vehicles) {
+    vehicle.printInfo();
+  }
 }

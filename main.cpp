@@ -2,14 +2,9 @@
 #include "simulator.h"
 
 int main() {
-  /*std::cout << "Please enter simulation time in minutes: ";
-  int simTime;
+  std::cout << "Starting simulation...\n";
 
-  std::cin >> simTime;*/
+  Simulator eVtolSim;
 
-  std::cout << "Simulating...\n";
-
-  Simulator mySim;
-
-  mySim.simulate();
+  eVtolSim.simulate();
 }

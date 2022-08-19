@@ -1,37 +1,39 @@
 #pragma once
 
-#include "enums.h"
 #include <chrono>
 #include <random>
+
+#include "chargingStation.h"
+#include "enums.h"
 
 class Vehicle {
  public:
   Vehicle() {}
-  Vehicle(
-    CompanyName companyName,
-    int cruiseSpeed, 
-    int batteryCapacity, 
-    double chargeTime, 
-    double energyUse, 
-    int passengerCount, 
-    double faultProbability);
+  Vehicle(CompanyName companyName, int cruiseSpeed, int batteryCapacity,
+          double chargeTime, double energyUse, int passengerCount,
+          double faultProbability, int index);
 
-  void simulate(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
+  void simulate(std::chrono::steady_clock::time_point simEndTime,
+                std::mt19937& rng, chargingStation& simChargingStation);
   void fly(std::chrono::steady_clock::time_point simEndTime);
-  void charge();
+  void charge(std::chrono::steady_clock::time_point simEndTime,
+              chargingStation& simChargingStation);
+  void printInfo();
   CompanyName getCompanyName() { return companyName; }
 
  private:
   VehicleState state = VehicleState::START;
   CompanyName companyName;
-  int batteryCapacity; // kWh
-  int passengerCount; // human bodies
-  double energyUse; // kWh per mile
-  
-  double cruiseSpeed; // miles per (simulated) minute (realworld second)
-  double chargeTime; // (simulated) minutes (realworld seconds)
-  double faultProbability; // faults per (simulated) minute (realworld second)
-  
+  int batteryCapacity;  // kWh
+  int passengerCount;   // human bodies
+  double energyUse;     // kWh per mile
+  int index;
+
+  double cruiseSpeed;  // miles per (simulated) minute (realworld second)
+  std::chrono::duration<double>
+      chargeTime;           // (simulated) minutes (realworld seconds)
+  double faultProbability;  // faults per (simulated) minute (realworld second)
+
   // vehicle stats
   std::chrono::duration<double> totalFlightTime = std::chrono::seconds{0};
   std::chrono::duration<double> totalChargingTime = std::chrono::seconds{0};
@@ -41,5 +43,6 @@ class Vehicle {
 
   // battery charging info
   float batteryLevel;
-  void trackFaults(std::chrono::steady_clock::time_point simEndTime, std::mt19937& rng);
+  void trackFaults(std::chrono::steady_clock::time_point simEndTime,
+                   std::mt19937& rng);
 };
