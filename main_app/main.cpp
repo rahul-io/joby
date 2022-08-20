@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "simulator.h"
+#include "../src/simulator.h"
 
 int main() {
   std::cout << "Starting simulation...\n";

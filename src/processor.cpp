@@ -39,8 +39,7 @@ void processor::processVehicle(const Vehicle& vehicle) {
 }
 
 void processor::prettyPrint() {
-  std::cout << "\n\n"
-            << std::setw(17) << "Company Name" << std::setw(23)
+  std::cout << std::setw(17) << "Company Name" << std::setw(23)
             << "Number of Vehicles" << std::setw(24) << "Average Flight Time"
             << std::setw(26) << "Average Charging Time" << std::setw(30)
             << "Average Charger Wait Time" << std::setw(15) << "Max Faults"
@@ -56,4 +55,5 @@ void processor::prettyPrint() {
               << " minutes" << std::setw(15) << a.maxFaults << std::setw(30)
               << a.totalPassengerDistance << " miles" << '\n';
   }
+  std::cout << std::endl;
 }

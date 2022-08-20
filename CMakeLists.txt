@@ -1,30 +1,35 @@
 cmake_minimum_required(VERSION 3.24.0)
 
-project(joby_evtol_sim VERSION 1.0.0)
-set(CMAKE_CXX_STANDARD 20)
+project(
+  JobyEvtolSim
+  VERSION 1.0.0
+  DESCRIPTION "eVTOL Simulator"
+  LANGUAGES CXX)
 
-add_library(
-  vehicle
-  vehicle.h
-  vehicle.cpp
-)
+if(PROJECT_IS_TOP_LEVEL)
+  
+  set(CMAKE_CXX_STANDARD 20)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(
-  simulator
-  simulator.h
-  simulator.cpp
-)
+  enable_testing()
 
-add_library(
-  processor
-  processor.h
-  processor.cpp
-)
+  add_subdirectory(src)
+  add_subdirectory(main_app)
+  add_subdirectory(test)
 
-set(CMAKE_THREAD_PREFER_PTHREAD TRUE)                                                                                                                                                                                                           
-set(THREADS_PREFER_PTHREAD_FLAG TRUE)                                                                                                                                                                                                           
-find_package(Threads REQUIRED)   
+  include(FetchContent)
+  FetchContent_Declare(
+    googletest
+    # Specify the commit you depend on and update it regularly.
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG release-1.12.1
+  )
 
-add_executable(joby_evtol_sim main.cpp)
+  FetchContent_GetProperties(googletest)
+  if(NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+  endif()
 
-target_link_libraries(joby_evtol_sim PRIVATE simulator vehicle processor Threads::Threads)
+  #gtest_discover_tests(JobyEvtolSim)
+endif()
