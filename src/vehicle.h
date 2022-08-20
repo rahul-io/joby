@@ -18,6 +18,14 @@ class Vehicle {
   void fly(std::chrono::steady_clock::time_point simEndTime);
   void charge(std::chrono::steady_clock::time_point simEndTime,
               chargingStation& simChargingStation);
+
+  double getCruiseSpeed() { return cruiseSpeed; }
+  int getbatteryCapacity() { return batteryCapacity; }
+  std::chrono::duration<double> getTimeToCharge() { return timeToCharge; }
+  double getEnergyUse() { return energyUse; }
+  int getPassengerCount() { return passengerCount; }
+  double getFaultProbability() { return faultProbability; }
+
   VehicleState getState() { return state; }
   std::chrono::duration<double> getTotalFlightTime() { return totalFlightTime; }
   std::chrono::duration<double> getTotalChargeTime() { return totalChargeTime; }
@@ -25,8 +33,10 @@ class Vehicle {
     return totalChargerWaitTime;
   }
   int getFaultCounter() { return faultCounter; }
-  int getOdometer() { return odometer; }
+  double getOdometer() { return odometer; }
+  double getBatteryLevel() { return batteryLevel; }
   void clearData();
+  void drainBattery();
 
  private:
   CompanyName companyName;
@@ -47,7 +57,7 @@ class Vehicle {
   double odometer = 0;
 
   // battery charging info
-  float batteryLevel;
+  double batteryLevel;
   void trackFaults(std::chrono::steady_clock::time_point simEndTime,
                    std::mt19937& rng);
   friend class processor;

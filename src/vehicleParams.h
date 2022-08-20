@@ -10,7 +10,7 @@ struct vehicleParams {
   double faultProbability;
 };
 
-std::array<vehicleParams, NUMBER_OF_COMPANIES> simParams = {
+static const std::array<vehicleParams, NUMBER_OF_COMPANIES> simParams = {
     {{alpha, 120, 320, 0.6, 1.6, 4, 0.25},
      {beta, 100, 100, 0.2, 1.5, 5, 0.10},
      {charlie, 160, 220, 0.8, 2.2, 3, 0.05},

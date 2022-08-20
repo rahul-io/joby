@@ -2,8 +2,9 @@
 
 #include <semaphore>
 
+#include "consts.h"
+
 struct chargingStation {
   chargingStation(){};
-  inline static const int NUM_CHARGERS = 3;
   std::counting_semaphore<NUM_CHARGERS> charger{NUM_CHARGERS};
 };
