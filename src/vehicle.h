@@ -10,7 +10,7 @@ class Vehicle {
  public:
   Vehicle() {}
   Vehicle(CompanyName companyName, int cruiseSpeed, int batteryCapacity,
-          double chargeTime, double energyUse, int passengerCount,
+          double timeToCharge, double energyUse, int passengerCount,
           double faultProbability);
 
   void simulate(std::chrono::steady_clock::time_point simEndTime,
@@ -33,7 +33,7 @@ class Vehicle {
   double cruiseSpeed;   // miles per (simulated) minute (realworld second)
   int batteryCapacity;  // kWh
   std::chrono::duration<double>
-      chargeTime;           // (simulated) minutes (realworld seconds)
+      timeToCharge;         // (simulated) minutes (realworld seconds)
   double energyUse;         // kWh per mile
   int passengerCount;       // human bodies
   double faultProbability;  // faults per (simulated) minute (realworld second)

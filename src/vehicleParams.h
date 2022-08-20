@@ -4,7 +4,7 @@ struct vehicleParams {
   CompanyName companyName;
   int cruiseSpeed;
   int batteryCapacity;
-  double chargeTime;
+  double timeToCharge;
   double energyUse;
   int passengerCount;
   double faultProbability;

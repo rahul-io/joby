@@ -25,7 +25,7 @@ Simulator::Simulator() {
 
     vehicles[i] = Vehicle(
         simParams[randIndex].companyName, simParams[randIndex].cruiseSpeed,
-        simParams[randIndex].batteryCapacity, simParams[randIndex].chargeTime,
+        simParams[randIndex].batteryCapacity, simParams[randIndex].timeToCharge,
         simParams[randIndex].energyUse, simParams[randIndex].passengerCount,
         simParams[randIndex].faultProbability);
   }

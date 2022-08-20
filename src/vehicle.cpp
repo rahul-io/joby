@@ -11,7 +11,7 @@
 using namespace std::chrono;
 
 Vehicle::Vehicle(CompanyName companyName, int cruiseSpeed, int batteryCapacity,
-                 double chargeTime, double energyUse, int passengerCount,
+                 double timeToCharge, double energyUse, int passengerCount,
                  double faultProbability)
     : companyName(companyName),
       cruiseSpeed(cruiseSpeed),
@@ -21,7 +21,7 @@ Vehicle::Vehicle(CompanyName companyName, int cruiseSpeed, int batteryCapacity,
       faultProbability(faultProbability) {
   this->batteryLevel = batteryCapacity;
   this->cruiseSpeed /= MINUTES_PER_HOUR;
-  this->chargeTime = duration<double>(chargeTime * MINUTES_PER_HOUR);
+  this->timeToCharge = duration<double>(timeToCharge * MINUTES_PER_HOUR);
 
   // converting probability of failure per hour to probability of failure per
   // minute
@@ -102,7 +102,7 @@ void Vehicle::charge(std::chrono::steady_clock::time_point simEndTime,
 
   if (startedCharging && steady_clock::now() < simEndTime) {
     duration<double> currentChargeTime = duration<double>(std::min(
-        this->chargeTime.count(),
+        this->timeToCharge.count(),
         double(duration<double>(simEndTime - steady_clock::now()).count())));
     std::this_thread::sleep_for(currentChargeTime);
     this->totalChargeTime += currentChargeTime;
@@ -134,6 +134,8 @@ void Vehicle::clearData() {
   this->faultCounter = 0;
   this->odometer = 0;
 }
+
+void Vehicle::drainBattery() { batteryLevel = 0; }
 
 /*
  TODO LIST
