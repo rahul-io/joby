@@ -44,7 +44,7 @@ void Simulator::simulate() {
 
   int timeCounter = 0;
   while (steady_clock::now() < simEndTime) {
-    std::cout << timeCounter << " seconds\n";
+    std::cout << timeCounter << " minutes\n";
     std::this_thread::sleep_for(1s);
     timeCounter++;
   }
@@ -53,7 +53,7 @@ void Simulator::simulate() {
     vehicleThreads[i].join();
   }
 
-  std::cout << "Simulation complete!\n";
+  std::cout << "180 minutes\nSimulation complete!\n";
 
   for (auto vehicle : this->vehicles) {
     simProcessor.processVehicle(vehicle);
