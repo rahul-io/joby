@@ -16,10 +16,8 @@ class Simulator {
 
  private:
   static chargingStation simChargingStation;
-  inline static const int NUMBER_OF_VEHICLES = 20;
-  inline static const int simDuration = 180;  // (simulated) minutes
-  inline static std::thread vehicleThreads[NUMBER_OF_VEHICLES];
-  inline static std::mt19937 rng[NUMBER_OF_VEHICLES];
-  inline static Vehicle vehicles[NUMBER_OF_VEHICLES];
+  static std::array<std::thread, NUMBER_OF_VEHICLES> vehicleThreads;
+  static std::array<std::mt19937, NUMBER_OF_VEHICLES> rng;
+  static std::array<Vehicle, NUMBER_OF_VEHICLES> vehicles;
   static processor simProcessor;
 };
