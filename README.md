@@ -70,3 +70,14 @@ Test project /home/rahul/repos/joby/build
 
 Total Test time (real) =  22.01 sec
 </pre>
+
+## Initial Assumptions
+The following assumptions were taken before starting development.
+1. Vehicles always charge to full.
+2. Vehicles always travel with a full load of passengers.
+
+## Project Structure
+![UML][uml.png]
+
+## Fault Probability Calculation
+To check for faults every second, I had to convert the probability of fault per hour to a probability per second. Since a fault with given probability $p_{hour}$ is a Bernoulli random variable, we can find $p_{minute}$ with the following: $$p_{minute} = 1 - (1 - p_{hour})^\frac{1}{60}$$
