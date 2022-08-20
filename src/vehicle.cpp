@@ -62,6 +62,7 @@ void Vehicle::fly(steady_clock::time_point simEndTime) {
   duration<double> currentFlightDuration;
   double currentFlightDistance;
 
+  // Every second, measure time and distance travelled
   while (steady_clock::now() < simEndTime && batteryLevel > 0) {
     std::this_thread::sleep_for(1s);
     auto now = steady_clock::now();
@@ -94,6 +95,8 @@ void Vehicle::fly(steady_clock::time_point simEndTime) {
 
 void Vehicle::charge(std::chrono::steady_clock::time_point simEndTime,
                      chargingStation& simChargingStation) {
+  // Try to acquire charger semaphore, block until semaphore is
+  // acquired and log total wait time.
   auto chargeWaitingStart = steady_clock::now();
   bool startedCharging =
       simChargingStation.charger.try_acquire_until(simEndTime);
@@ -101,6 +104,9 @@ void Vehicle::charge(std::chrono::steady_clock::time_point simEndTime,
   totalChargerWaitTime += chargeWaitingEnd - chargeWaitingStart;
 
   if (startedCharging && steady_clock::now() < simEndTime) {
+    // We don't want to keep charging after the simulation is over, so only
+    // charge for the charge time or until the simulation ends (whichever is
+    // smaller).
     duration<double> currentChargeTime = duration<double>(std::min(
         this->timeToCharge.count(),
         double(duration<double>(simEndTime - steady_clock::now()).count())));

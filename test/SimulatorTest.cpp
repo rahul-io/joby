@@ -28,7 +28,7 @@ TEST_F(SimulatorTest, StartsAtZero) {
 }
 
 TEST_F(SimulatorTest, ValidSimulation) {
-  testSim.simulate();
+  Simulator::simulate();
   {
     for (auto v : testSim.getVehicles()) {
       EXPECT_EQ(v.getState(), COMPLETE);

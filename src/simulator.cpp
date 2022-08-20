@@ -38,12 +38,14 @@ void Simulator::simulate() {
   auto simStartTime = steady_clock::now();
   auto simEndTime = simStartTime + SIM_DURATION;
 
+  // Create new thread for each vehicle and start vehicle simulation
   for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
     vehicleThreads[i] =
         std::thread(&Vehicle::simulate, std::ref(vehicles[i]), simEndTime,
                     std::ref(rng[i]), std::ref(simChargingStation));
   }
 
+  // Print counter to screen to see sim time remaining
   int timeCounter = 0;
   while (steady_clock::now() < simEndTime) {
     std::cout << timeCounter << " minutes\n";
@@ -57,7 +59,8 @@ void Simulator::simulate() {
 
   std::cout << (timeCounter) << " minutes\nSimulation complete!\n\n";
 
-  for (auto vehicle : this->vehicles) {
+  // Aggregate all vehicle stats by company
+  for (auto vehicle : vehicles) {
     simProcessor.processVehicle(vehicle);
   }
 

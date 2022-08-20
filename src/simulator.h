@@ -14,11 +14,11 @@ class Simulator {
  public:
   Simulator();
 
-  void simulate();
-  inline const std::array<Vehicle, NUMBER_OF_VEHICLES>& getVehicles() {
+  static void simulate();
+  static const std::array<Vehicle, NUMBER_OF_VEHICLES>& getVehicles() {
     return vehicles;
   }
-  void clearData();
+  static void clearData();
 
  private:
   static chargingStation simChargingStation;

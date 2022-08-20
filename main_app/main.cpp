@@ -7,5 +7,5 @@ int main() {
 
   Simulator eVtolSim;
 
-  eVtolSim.simulate();
+  Simulator::simulate();
 }

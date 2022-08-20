@@ -19,6 +19,7 @@ class Vehicle {
   void charge(std::chrono::steady_clock::time_point simEndTime,
               chargingStation& simChargingStation);
 
+  // getters (only used for unit tests to validate vehicle data)
   double getCruiseSpeed() { return cruiseSpeed; }
   int getbatteryCapacity() { return batteryCapacity; }
   std::chrono::duration<double> getTimeToCharge() { return timeToCharge; }
