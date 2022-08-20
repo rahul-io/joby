@@ -27,14 +27,16 @@ TEST_F(SimulatorTest, StartsAtZero) {
   }
 }
 
-TEST_F(SimulatorTest, ValidTimes) {
+TEST_F(SimulatorTest, ValidSimulation) {
   testSim.simulate();
   {
     for (auto v : testSim.getVehicles()) {
+      EXPECT_EQ(v.getState(), COMPLETE);
       EXPECT_LT(
           abs(SIM_DURATION - (v.getTotalFlightTime() + v.getTotalChargeTime() +
                               v.getTotalChargerWaitTime())),
           (duration<double>(0.5)));
+      EXPECT_GT(v.getOdometer(), 0);
     }
   }
 }
