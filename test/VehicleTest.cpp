@@ -61,4 +61,5 @@ TEST_F(VehicleTest, testCharge) {
   auto chargeDuration = duration_cast<seconds>(end - start);
   EXPECT_NEAR(chargeDuration.count(), testVehicle.getTimeToCharge().count(),
               0.1);
+  EXPECT_EQ(testVehicle.getBatteryLevel(), testVehicle.getbatteryCapacity());
 }
