@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24.0)
 
 set(HEADERS
     chargingStation.h
-    enums.h
+    consts.h
     processor.h
     simulator.h
     vehicle.h
