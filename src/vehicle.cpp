@@ -55,6 +55,7 @@ void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng,
   }
 
   faultCounterThread.join();
+  return;
 }
 
 void Vehicle::printInfo() {
@@ -65,6 +66,7 @@ void Vehicle::printInfo() {
       index, companyName, batteryLevel, totalFlightTime.count(),
       totalChargeTime.count(), totalChargerWaitTime.count(), odometer,
       faultCounter);
+  return;
 }
 
 void Vehicle::fly(steady_clock::time_point simEndTime) {

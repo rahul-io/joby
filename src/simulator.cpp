@@ -60,4 +60,5 @@ void Simulator::simulate() {
   }
 
   simProcessor.prettyPrint();
+  return;
 }

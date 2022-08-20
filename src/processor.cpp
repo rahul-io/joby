@@ -36,6 +36,8 @@ void processor::processVehicle(const Vehicle& vehicle) {
 
   aggregateData[vehicleType].totalPassengerDistance +=
       vehicle.odometer * vehicle.passengerCount;
+
+  return;
 }
 
 void processor::prettyPrint() {
@@ -56,4 +58,6 @@ void processor::prettyPrint() {
               << a.totalPassengerDistance << " miles" << '\n';
   }
   std::cout << std::endl;
+
+  return;
 }
