@@ -4,7 +4,6 @@
 #include <iostream>
 #include <random>
 
-#include "enums.h"
 #include "vehicle.h"
 #include "vehicleParams.h"
 
@@ -28,7 +27,7 @@ Simulator::Simulator() {
         simParams[randIndex].companyName, simParams[randIndex].cruiseSpeed,
         simParams[randIndex].batteryCapacity, simParams[randIndex].chargeTime,
         simParams[randIndex].energyUse, simParams[randIndex].passengerCount,
-        simParams[randIndex].faultProbability, i);
+        simParams[randIndex].faultProbability);
   }
 
   auto end = steady_clock::now();
@@ -37,7 +36,7 @@ Simulator::Simulator() {
 
 void Simulator::simulate() {
   auto simStartTime = steady_clock::now();
-  auto simEndTime = simStartTime + duration<int>(simDuration);
+  auto simEndTime = simStartTime + SIM_DURATION;
 
   for (int i = 0; i < NUMBER_OF_VEHICLES; i++) {
     vehicleThreads[i] =
@@ -63,5 +62,13 @@ void Simulator::simulate() {
   }
 
   simProcessor.prettyPrint();
+  clearData();
   return;
+}
+
+void Simulator::clearData() {
+  simProcessor.clearData();
+  for (auto v : vehicles) {
+    v.clearData();
+  }
 }

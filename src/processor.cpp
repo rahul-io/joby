@@ -2,6 +2,9 @@
 
 #include <iomanip>
 #include <iostream>
+
+using namespace std::chrono;
+
 processor::processor() {
   for (int i = 0; i < NUMBER_OF_COMPANIES; i++) {
     aggregateData[i].companyNameString = companyNameStrings[i];
@@ -60,4 +63,15 @@ void processor::prettyPrint() {
   std::cout << std::endl;
 
   return;
+}
+
+void processor::clearData() {
+  for (auto a : aggregateData) {
+    a.numVehicles = 0;
+    a.avgFlightTime = seconds{0};
+    a.avgChargeTime = seconds{0};
+    a.avgChargerWaitTime = seconds{0};
+    a.maxFaults = 0;
+    a.totalPassengerDistance = 0;
+  }
 }

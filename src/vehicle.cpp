@@ -6,21 +6,19 @@
 #include <iostream>
 #include <thread>
 
-#include "enums.h"
 #include "stdlib.h"
 
 using namespace std::chrono;
 
 Vehicle::Vehicle(CompanyName companyName, int cruiseSpeed, int batteryCapacity,
                  double chargeTime, double energyUse, int passengerCount,
-                 double faultProbability, int index)
+                 double faultProbability)
     : companyName(companyName),
       cruiseSpeed(cruiseSpeed),
       batteryCapacity(batteryCapacity),
       energyUse(energyUse),
       passengerCount(passengerCount),
-      faultProbability(faultProbability),
-      index(index) {
+      faultProbability(faultProbability) {
   this->batteryLevel = batteryCapacity;
   this->cruiseSpeed /= MINUTES_PER_HOUR;
   this->chargeTime = duration<double>(chargeTime * MINUTES_PER_HOUR);
@@ -33,6 +31,7 @@ Vehicle::Vehicle(CompanyName companyName, int cruiseSpeed, int batteryCapacity,
 
 void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng,
                        chargingStation& simChargingStation) {
+  // start tracking faults in  a separate thread, independent of flying/charging
   rng.seed(std::hash<std::thread::id>()(std::this_thread::get_id()));
   std::thread faultCounterThread(&Vehicle::trackFaults, this, simEndTime,
                                  std::ref(rng));
@@ -55,17 +54,6 @@ void Vehicle::simulate(steady_clock::time_point simEndTime, std::mt19937& rng,
   }
 
   faultCounterThread.join();
-  return;
-}
-
-void Vehicle::printInfo() {
-  std::printf(
-      "index: %i \tcompanyName: %i\tbatteryLevel: %f\ttotalFlightTime: "
-      "%f\ttotalChargeTime: %f\ttotalChargingWaitTime: %f\todometer: "
-      "%f\tfaultCounter: %i\n",
-      index, companyName, batteryLevel, totalFlightTime.count(),
-      totalChargeTime.count(), totalChargerWaitTime.count(), odometer,
-      faultCounter);
   return;
 }
 
@@ -113,14 +101,12 @@ void Vehicle::charge(std::chrono::steady_clock::time_point simEndTime,
   totalChargerWaitTime += chargeWaitingEnd - chargeWaitingStart;
 
   if (startedCharging && steady_clock::now() < simEndTime) {
-    // std::printf("Vehicle %i started charging\n", this->index);
     duration<double> currentChargeTime = duration<double>(std::min(
         this->chargeTime.count(),
         double(duration<double>(simEndTime - steady_clock::now()).count())));
     std::this_thread::sleep_for(currentChargeTime);
     this->totalChargeTime += currentChargeTime;
     this->batteryLevel = batteryCapacity;
-    // std::printf("Vehicle %i finished charging\n", this->index);
     simChargingStation.charger.release();
     this->state = FLYING;
   } else {
@@ -138,6 +124,15 @@ void Vehicle::trackFaults(steady_clock::time_point simEndTime,
     faultCounter += (randDouble < this->faultProbability) ? 1 : 0;
   }
   return;
+}
+
+void Vehicle::clearData() {
+  this->state = START;
+  this->totalFlightTime = seconds{0};
+  this->totalChargeTime = seconds{0};
+  this->totalChargerWaitTime = seconds{0};
+  this->faultCounter = 0;
+  this->odometer = 0;
 }
 
 /*

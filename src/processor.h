@@ -3,7 +3,7 @@
 #include <chrono>
 #include <string>
 
-#include "enums.h"
+#include "consts.h"
 #include "vehicle.h"
 
 class processor {
@@ -11,6 +11,7 @@ class processor {
   processor();
   void processVehicle(const Vehicle& vehicle);
   void prettyPrint();
+  void clearData();
 
  private:
   struct typeInfo {
@@ -22,8 +23,7 @@ class processor {
     int maxFaults = 0;
     double totalPassengerDistance = 0;
   };
-  inline static const int NUMBER_OF_COMPANIES = 5;
   std::array<std::string, NUMBER_OF_COMPANIES> companyNameStrings{
       "Alpha", "Beta", "Charlie", "Delta", "Echo"};
-  typeInfo aggregateData[NUMBER_OF_COMPANIES];
+  std::array<typeInfo, NUMBER_OF_COMPANIES> aggregateData;
 };

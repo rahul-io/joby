@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "chargingStation.h"
+#include "consts.h"
 #include "processor.h"
 #include "vehicle.h"
 
@@ -13,6 +14,10 @@ class Simulator {
   Simulator();
 
   void simulate();
+  inline const std::array<Vehicle, NUMBER_OF_VEHICLES>& getVehicles() {
+    return vehicles;
+  }
+  void clearData();
 
  private:
   static chargingStation simChargingStation;
