@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.24.0)
 
 set(SOURCES
-    SimulatorTest.cpp
-    VehicleTest.cpp
+VehicleTest.cpp
+SimulatorTest.cpp
 )
 
 add_executable(eVTOLSimTests ${SOURCES})
