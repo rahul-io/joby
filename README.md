@@ -77,7 +77,8 @@ The following assumptions were taken before starting development.
 2. Vehicles always travel with a full load of passengers.
 
 ## Project Structure
-![UML][uml.png]
+![joby UML - UML Class](https://user-images.githubusercontent.com/8994144/185768511-3f961347-106f-4f8f-9ea3-8aff15545ff6.png)
+
 
 ## Fault Probability Calculation
 To check for faults every second, I had to convert the probability of fault per hour to a probability per second. Since a fault with given probability $p_{hour}$ is a Bernoulli random variable, we can find $p_{minute}$ with the following: $$p_{minute} = 1 - (1 - p_{hour})^\frac{1}{60}$$
