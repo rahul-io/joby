@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24.0)
 
 project(
-  JobyEvtolSim
+  JobyEVtolSim
   VERSION 1.0.0
   DESCRIPTION "eVTOL Simulator"
   LANGUAGES CXX)
@@ -30,6 +30,4 @@ if(PROJECT_IS_TOP_LEVEL)
     FetchContent_Populate(googletest)
     add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
   endif()
-
-  #gtest_discover_tests(JobyEvtolSim)
 endif()
