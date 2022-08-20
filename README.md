@@ -2,6 +2,6 @@
 
 ## System Requirements
 * CMake: >=3.24.0
-* GCC: >=11 (for C++20)
+* C++20 compatible compiler (e.g. g++ >=11)
 
 ## Installation Instructions
